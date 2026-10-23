@@ -1,0 +1,29 @@
+name: iOS IPA
+on:
+  push:
+    paths: ["ios/**", ".github/workflows/ios.yml"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+      - name: XcodeGen
+        run: brew install xcodegen && cd ios && xcodegen generate
+      - name: Derle (imzasız)
+        run: |
+          cd ios
+          xcodebuild -project ClaudeRemote.xcodeproj -scheme ClaudeRemote -configuration Release \
+            -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath build \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build
+      - name: IPA paketle
+        run: |
+          cd ios
+          mkdir Payload
+          cp -R build/Build/Products/Release-iphoneos/ClaudeRemote.app Payload/
+          zip -qry Terminaller.ipa Payload
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Terminaller-ipa
+          path: ios/Terminaller.ipa

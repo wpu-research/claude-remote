@@ -1,2 +1,6 @@
 node_modules/
 .claude/settings.local.json
+ios/build/
+ios/*.xcodeproj/
+ios/Payload/
+*.ipa
