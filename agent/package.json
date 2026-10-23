@@ -1,0 +1,7 @@
+{
+  "name": "claude-remote-agent",
+  "private": true,
+  "version": "1.0.0",
+  "main": "agent.js",
+  "dependencies": { "ws": "8.18.0" }
+}
